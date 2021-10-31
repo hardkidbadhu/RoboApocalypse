@@ -32,10 +32,10 @@ func (v *viperConfig) Init(filePath, schemaPath string) (Config, error) {
 	}
 
 	v.log.Infof("successfully read configuration from: %v", filePath)
-	if err := v.validateConfiguration(filePath, schemaPath); err != nil {
-		v.log.Errorf("Invalid configuration: %v, err: %+v", filePath, err)
-		return nil, err
-	}
+	// if err := v.validateConfiguration(filePath, schemaPath); err != nil {
+	// 	v.log.Errorf("Invalid configuration: %v, err: %+v", filePath, err)
+	// 	return nil, err
+	// }
 
 	return v, nil
 }
@@ -47,8 +47,8 @@ func (v *viperConfig) validateConfiguration(configFile, schemaPath string) error
 
 	viper.SetConfigFile(configFile)
 
-	schemaLoader := gojsonschema.NewReferenceLoader("file://"+schemaPath)
-	documentLoader := gojsonschema.NewReferenceLoader("file://"+configFile)
+	schemaLoader := gojsonschema.NewReferenceLoader("file://" + schemaPath)
+	documentLoader := gojsonschema.NewReferenceLoader("file://" + configFile)
 
 	res, err := gojsonschema.Validate(schemaLoader, documentLoader)
 	if err != nil {
@@ -90,5 +90,3 @@ func NewViperConfig(log *logrus.Entry) *viperConfig {
 	}
 	return v
 }
-
-

@@ -2,19 +2,22 @@
 format:
 	go fmt ./...
 
+install_deps:
+	go get ./... && go mod vendor
+
 generate_docs:
 	swag init
 
-stop:
-	docker-compose down -v
+build:
+	go build -o robot_apocalypse
 
-logs:
-	docker-compose logs -f -t
+build_and_run:
+	go build -o robot_apocalypse && ./robot_apocalypse
+run:
+	go run main.go
 
-clean:
-	chmod -R +w ./.gopath vendor
-
-##Runs application in docker container
-start:
+db_up:
 	docker-compose up -d
 
+db_down:
+	docker-compose down

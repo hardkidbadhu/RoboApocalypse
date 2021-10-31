@@ -6,7 +6,7 @@
     "paths": {
         "/api/rob/v1/healthz": {
             "get": {
-                "description": "Health Check Of the API",
+                "description": "Health Check API",
                 "produces": [
                     "application/json"
                 ],
@@ -23,9 +23,272 @@
                     }
                 }
             }
+        },
+        "/api/rob/v1/reports/list/robots": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "lists all the robots",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Robots"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "{\"message\":0,\"err_code\": \"ERR_*\", \"error\": \"err\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/rob/v1/reports/list/survivors": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "lists all the survivors",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "infected / nonInfected",
+                        "name": "infectionStatus",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Survivor"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "{\"message\":0,\"err_code\": \"ERR_*\", \"error\": \"err\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/rob/v1/reports/percentage/survivors": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "lists all the robots",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "infected / nonInfected",
+                        "name": "infectionStatus",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Survivor"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "{\"message\":0,\"err_code\": \"ERR_*\", \"error\": \"err\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/rob/v1/survivor/add": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Survivor"
+                ],
+                "summary": "add new survivor to the base",
+                "parameters": [
+                    {
+                        "description": "request body",
+                        "name": "AddSurvivor",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.SurvivorPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "{\"message\":0,\"err_code\": \"ERR_*\", \"error\": \"err\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "{\"message\":0,\"err_code\": \"ERR_*\", \"error\": \"err\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/rob/v1/survivor/flag": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Survivor"
+                ],
+                "summary": "add new survivor to the base",
+                "parameters": [
+                    {
+                        "description": "request body",
+                        "name": "FlagSurvivor",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.FlagPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "{\"message\":0,\"err_code\": \"ERR_*\", \"error\": \"err\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "{\"message\":0,\"err_code\": \"ERR_*\", \"error\": \"err\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/rob/v1/survivor/update": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Survivor"
+                ],
+                "summary": "add new survivor to the base",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user id",
+                        "name": "userId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "description": "request body",
+                        "name": "UpdateSurvivorLocation",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Location"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "{\"message\":0,\"err_code\": \"ERR_*\", \"error\": \"err\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "{\"message\":0,\"err_code\": \"ERR_*\", \"error\": \"err\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "model.FlagPayload": {
+            "type": "object",
+            "required": [
+                "infectedUser",
+                "infectionStatus",
+                "user"
+            ],
+            "properties": {
+                "infectedUser": {
+                    "type": "integer"
+                },
+                "infectionStatus": {
+                    "type": "integer"
+                },
+                "user": {
+                    "type": "integer"
+                }
+            }
+        },
         "model.HealthResponse": {
             "type": "object",
             "properties": {
@@ -33,6 +296,111 @@
                     "type": "string"
                 },
                 "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Inventory": {
+            "type": "object",
+            "properties": {
+                "ammunition": {
+                    "type": "integer"
+                },
+                "food": {
+                    "type": "integer"
+                },
+                "medication": {
+                    "type": "integer"
+                },
+                "water": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.Location": {
+            "type": "object",
+            "properties": {
+                "latitude": {
+                    "type": "number"
+                },
+                "longitude": {
+                    "type": "number"
+                }
+            }
+        },
+        "model.Response": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Robots": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "manufacturedDate": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "serialNumber": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Survivor": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "coOrdinates": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "infectionStatus": {
+                    "type": "string"
+                },
+                "inventory": {
+                    "$ref": "#/definitions/model.Inventory"
+                },
+                "location": {
+                    "$ref": "#/definitions/model.Location"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.SurvivorPayload": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "infectionStatus": {
+                    "type": "string"
+                },
+                "inventory": {
+                    "$ref": "#/definitions/model.Inventory"
+                },
+                "location": {
+                    "$ref": "#/definitions/model.Location"
+                },
+                "name": {
                     "type": "string"
                 }
             }

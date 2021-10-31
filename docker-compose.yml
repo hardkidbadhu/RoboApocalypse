@@ -1,19 +1,18 @@
 version: '3.3'
 services:
   db:
-    image: mysql:5.7
+    image: kartoza/postgis:14-3.1
     restart: always
     environment:
-      MYSQL_DATABASE: 'robot_apocalypse'
-      MYSQL_USER: 'mysql-user'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_DB: 'robot_apocalypse'
     ports:
-      - '3306:3306'
-    expose:
-      - '3306'
+      - 5432:5432
+    healthcheck:
+      test: "exit 0"
     volumes:
-      - my-db:/var/lib/mysql
+      - postgis-data:/var/lib/postgresql
 
 volumes:
-  my-db:
+  postgis-data:

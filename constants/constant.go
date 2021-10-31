@@ -18,4 +18,6 @@ const (
 	DBMaxOpenConnection = "max_open_connections"
 	DBMaxIdleConnection = "max_idle_connections"
 	DBMaxLifeTime       = "max_life_time_in_minute"
+
+	RoboListURL = "robo_list_url"
 )

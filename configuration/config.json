@@ -2,12 +2,14 @@
   "port": "8080",
   "service_name": "robot_apocalypse",
   "allowed_origins": "http://localhost:8080",
-  "db_user": "mysql",
-  "db_password": "password",
+  "db_user": "postgres",
+  "db_pass": "password",
   "db_host": "localhost",
-  "db_port": "3306",
-  "db_name": "zombie_apocalypse",
+  "db_port": "5432",
+  "db_name": "robot_apocalypse",
   "max_open_connections": 25,
   "max_idle_connections": 25,
-  "max_life_time_in_minute": 2
+  "max_life_time_in_minute": 2,
+  "database": "postgres",
+  "robo_list_url": "https://robotstakeover20210903110417.azurewebsites.net/robotcpu"
 }

@@ -20,10 +20,10 @@ func NewHealthCheckCtrl(log *logrus.Entry) *HealthCheckController {
 	}
 }
 
-// HealthCheck godoc
+// RobotApocalypse godoc
 // @Tags Health
 // @Summary Health
-// @Description Health Check Of the API
+// @Description Health Check API
 // @Produce  json
 // @Success 200 {object} model.HealthResponse
 // @Router /api/rob/v1/healthz [get]

@@ -1,19 +1,22 @@
 package repository
 
 import (
+	"database/sql"
+	"fmt"
+	"strconv"
+	"time"
+
 	"github.com/RobotApocalypse/configuration"
 	"github.com/RobotApocalypse/constants"
 
-	"database/sql"
-	"fmt"
-	"time"
-
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/golang-migrate/migrate"
-	"github.com/golang-migrate/migrate/database/mysql"
-	_ "github.com/golang-migrate/migrate/source/file"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
+	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 )
+
+var db *sql.DB
 
 type DBConnect interface {
 	ConnectDB() *sql.DB
@@ -27,29 +30,13 @@ type dbConnect struct {
 
 func (d dbConnect) ConnectDB() *sql.DB {
 	var err error
-	crsqlQuery := fmt.Sprintf("%s:%s@(%s:%s)/", d.cfg.GetString(constants.DBUserName), d.cfg.GetOsEnvString(d.cfg.GetString(constants.DBPassword)),
-		d.cfg.GetString(constants.DBHost), d.cfg.GetString(constants.DBPort))
-	crdb, err := sql.Open(d.cfg.GetString(constants.Database),crsqlQuery)
-	if err != nil {
-		d.log.Fatalf("error: connecting db - %s", err.Error())
-	}
+	port, _ := strconv.Atoi(d.cfg.GetString(constants.DBPort))
+	psqlConn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+		d.cfg.GetString(constants.DBHost), port, d.cfg.GetString(constants.DBUserName), d.cfg.GetString(constants.DBPassword),
+		d.cfg.GetString(constants.DBName))
 
-	defer crdb.Close()
-
-	_,err = crdb.Exec("CREATE DATABASE IF NOT EXISTS "+d.cfg.GetString(constants.DBName)+" DEFAULT COLLATE utf8_general_ci")
-	if err != nil {
-		d.log.Fatalf("error: executing db init query - %s", err.Error())
-	}
-
-	_,err = crdb.Exec("USE "+ d.cfg.GetString(constants.DBName))
-	if err != nil {
-		d.log.Fatalf("error: executing use db query - %s", err.Error())
-	}
-
-	sqlQuery := fmt.Sprintf("%s:%s@(%s:%s)/%s",d.cfg.GetString(constants.DBUserName), d.cfg.GetOsEnvString(d.cfg.GetString(constants.DBPassword)),
-		d.cfg.GetString(constants.DBHost) ,d.cfg.GetString(constants.DBPort), d.cfg.GetString(constants.DBName))
-
-	db, err := sql.Open(d.cfg.GetString(constants.Database),sqlQuery)
+	d.log.Infoln("psqlConn", psqlConn)
+	db, err = sql.Open("postgres", psqlConn)
 	if err != nil {
 		d.log.Fatalf("error: exec schema migration table - %s", err.Error())
 	}
@@ -68,31 +55,26 @@ func (d dbConnect) ConnectDB() *sql.DB {
  * @Description: Migrate updates the schema and table init in database listed in the file in directory  /migrations/mysql
  */
 func (d dbConnect) Migrate() {
-	sqlQuery := fmt.Sprintf("%s:%s@(%s:%s)/%s",d.cfg.GetString(constants.DBUserName), d.cfg.GetOsEnvString(d.cfg.GetString(constants.DBPassword)),
-		d.cfg.GetString(constants.DBHost) ,d.cfg.GetString(constants.DBPort), d.cfg.GetString(constants.DBName))
 
-	db, err := sql.Open("mysql", sqlQuery)
-	if err != nil {
-		d.log.Fatalf("error: migrate conn open - %s", err.Error())
-	}
-	driver, err := mysql.WithInstance(db, &mysql.Config{})
+	d.log.Infoln("starting migration.....")
+	driver, err := postgres.WithInstance(db, &postgres.Config{})
 	if err != nil {
 		d.log.Fatalf("error: migrate (WithInstance) - %s", err.Error())
 	}
 
 	m, err := migrate.NewWithDatabaseInstance(
-		"file://db/migrations/mysql",
-		"mysql",
-		driver)
+		"file://db/migrations/postgres",
+		"postgres", driver)
 	if err != nil {
 		d.log.Fatalf("error: migrate NewWithDatabaseInstance  - %s", err.Error())
 	}
 
-	if err := m.Up(); err != nil && err != migrate.ErrNoChange{
+	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
 		d.log.Fatalf("error: migration up - %s", err.Error())
 	}
-}
 
+	d.log.Infoln("exiting migration.....")
+}
 
 func NewDBConnect(cfg configuration.Config, log *logrus.Entry) DBConnect {
 	return &dbConnect{
@@ -100,4 +82,3 @@ func NewDBConnect(cfg configuration.Config, log *logrus.Entry) DBConnect {
 		log: log,
 	}
 }
-
