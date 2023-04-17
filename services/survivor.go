@@ -1,10 +1,11 @@
 package services
 
 import (
+	"github.com/hardkidbadhu/RoboApocalypse/model"
+	"github.com/hardkidbadhu/RoboApocalypse/repository"
+
 	"strconv"
 
-	"github.com/RobotApocalypse/model"
-	"github.com/RobotApocalypse/repository"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )

@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"github.com/RobotApocalypse/constants"
-	"github.com/RobotApocalypse/model"
-
 	"net/http"
+
+	"github.com/hardkidbadhu/RoboApocalypse/constants"
+	"github.com/hardkidbadhu/RoboApocalypse/model"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -38,5 +38,3 @@ func (healthCheckController HealthCheckController) HealthCheck(ctx *gin.Context)
 	})
 	logger.Info(" HealthCheck call completed")
 }
-
-

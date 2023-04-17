@@ -1,12 +1,13 @@
 package controllers
 
 import (
-	"github.com/RobotApocalypse/model"
-	"github.com/RobotApocalypse/services"
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"github.com/hardkidbadhu/RoboApocalypse/model"
+	"github.com/hardkidbadhu/RoboApocalypse/services"
 )
 
 type ReportController interface {
@@ -29,8 +30,8 @@ type reportCtrl struct {
 // @Router /api/rob/v1/reports/percentage/survivors [GET]
 func (r reportCtrl) ReportPercentage(ctx *gin.Context) {
 	filter := ctx.Request.URL.Query().Get("infectionStatus")
-	log.Println("filter" ,filter, ctx.Request.URL)
-	resp , err := r.svc.Percentage(ctx, strings.TrimSpace(filter))
+	log.Println("filter", filter, ctx.Request.URL)
+	resp, err := r.svc.Percentage(ctx, strings.TrimSpace(filter))
 	if err != nil {
 		ctx.IndentedJSON(http.StatusInternalServerError, err.(model.ErrResp))
 		return
@@ -49,8 +50,8 @@ func (r reportCtrl) ReportPercentage(ctx *gin.Context) {
 // @Router /api/rob/v1/reports/list/survivors [GET]
 func (r reportCtrl) ListSurvivors(ctx *gin.Context) {
 	filter := ctx.Request.URL.Query().Get("infectionStatus")
-	log.Println("filter" ,filter, ctx.Request.URL)
-	resp , err := r.svc.List(ctx, strings.TrimSpace(filter))
+	log.Println("filter", filter, ctx.Request.URL)
+	resp, err := r.svc.List(ctx, strings.TrimSpace(filter))
 	if err != nil {
 		ctx.IndentedJSON(http.StatusInternalServerError, err.(model.ErrResp))
 		return
@@ -77,6 +78,6 @@ func (r reportCtrl) ListAllRobots(ctx *gin.Context) {
 
 func NewReportCtrl(svc services.ReportService) ReportController {
 	return &reportCtrl{
-		svc:svc,
+		svc: svc,
 	}
 }

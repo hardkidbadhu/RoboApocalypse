@@ -1,7 +1,8 @@
 package repository
 
 import (
-	"github.com/RobotApocalypse/model"
+	"github.com/hardkidbadhu/RoboApocalypse/model"
+
 	"github.com/gin-gonic/gin"
 )
 

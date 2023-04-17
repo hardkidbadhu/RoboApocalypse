@@ -2,13 +2,13 @@ package grpcclient
 
 import (
 	"context"
+	"github.com/hardkidbadhu/RoboApocalypse/roboGrpc"
 
-	robo "github.com/RobotApocalypse/grpc"
 	"google.golang.org/grpc"
 )
 
 type RoboClient interface {
-	GetRoboList(ctx context.Context, filter *robo.Filter) (*robo.RoboList, error)
+	GetRoboList(ctx context.Context, filter *roboGrpc.Filter) (*roboGrpc.RoboList, error)
 }
 
 type roboClient struct {

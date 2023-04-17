@@ -6,9 +6,9 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/RobotApocalypse/configuration"
-	"github.com/RobotApocalypse/constants"
-	"github.com/RobotApocalypse/model"
+	"github.com/hardkidbadhu/RoboApocalypse/configuration"
+	"github.com/hardkidbadhu/RoboApocalypse/constants"
+	"github.com/hardkidbadhu/RoboApocalypse/model"
 	"github.com/sirupsen/logrus"
 )
 

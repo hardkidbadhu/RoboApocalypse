@@ -1,17 +1,17 @@
 package router
 
 import (
-	"github.com/RobotApocalypse/Client"
-	"github.com/RobotApocalypse/configuration"
-	"github.com/RobotApocalypse/constants"
-	"github.com/RobotApocalypse/controllers"
-	"github.com/RobotApocalypse/docs"
-	"github.com/RobotApocalypse/middleware"
-	"github.com/RobotApocalypse/repository"
-	"github.com/RobotApocalypse/services"
+	"github.com/hardkidbadhu/RoboApocalypse/Client"
+	"github.com/hardkidbadhu/RoboApocalypse/configuration"
+	"github.com/hardkidbadhu/RoboApocalypse/constants"
+	"github.com/hardkidbadhu/RoboApocalypse/controllers"
+	"github.com/hardkidbadhu/RoboApocalypse/docs"
+	"github.com/hardkidbadhu/RoboApocalypse/middleware"
+	"github.com/hardkidbadhu/RoboApocalypse/repository"
+	"github.com/hardkidbadhu/RoboApocalypse/services"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )

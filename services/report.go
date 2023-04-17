@@ -1,15 +1,16 @@
 package services
 
 import (
+	"github.com/hardkidbadhu/RoboApocalypse/Client"
+	"github.com/hardkidbadhu/RoboApocalypse/model"
+	"github.com/hardkidbadhu/RoboApocalypse/repository"
+
 	"context"
 	"errors"
 	"sort"
 	"strconv"
 	"sync"
 
-	"github.com/RobotApocalypse/Client"
-	"github.com/RobotApocalypse/model"
-	"github.com/RobotApocalypse/repository"
 	"github.com/gin-gonic/gin"
 )
 

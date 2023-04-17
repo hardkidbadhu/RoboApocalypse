@@ -2,10 +2,12 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/RobotApocalypse/model"
-	"github.com/RobotApocalypse/services"
-	"github.com/gin-gonic/gin"
+
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/hardkidbadhu/RoboApocalypse/model"
+	"github.com/hardkidbadhu/RoboApocalypse/services"
 )
 
 type Survivor interface {
@@ -33,7 +35,7 @@ func (s survivor) AddSurvivor(ctx *gin.Context) {
 	if err := ctx.ShouldBindJSON(&survivorIns); err != nil {
 		ctx.IndentedJSON(http.StatusBadRequest, model.ErrResp{
 			Message: "invalid json",
-			Err: err,
+			Err:     err,
 			ErrCode: model.ErrInvalidJSON,
 		})
 		return
@@ -65,7 +67,7 @@ func (s survivor) UpdateSurvivorLocation(ctx *gin.Context) {
 	if err := ctx.ShouldBindJSON(&survivorIns); err != nil {
 		ctx.IndentedJSON(http.StatusBadRequest, model.ErrResp{
 			Message: "invalid json",
-			Err: err,
+			Err:     err,
 			ErrCode: model.ErrInvalidJSON,
 		})
 		return
@@ -96,7 +98,7 @@ func (s survivor) FlagSurvivor(ctx *gin.Context) {
 	if err := ctx.ShouldBindJSON(&survivorIns); err != nil {
 		ctx.IndentedJSON(http.StatusBadRequest, model.ErrResp{
 			Message: "invalid json",
-			Err: err,
+			Err:     err,
 			ErrCode: model.ErrInvalidJSON,
 		})
 		return

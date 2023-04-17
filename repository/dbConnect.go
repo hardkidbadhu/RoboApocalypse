@@ -1,13 +1,13 @@
 package repository
 
 import (
+	"github.com/hardkidbadhu/RoboApocalypse/configuration"
+	"github.com/hardkidbadhu/RoboApocalypse/constants"
+
 	"database/sql"
 	"fmt"
 	"strconv"
 	"time"
-
-	"github.com/RobotApocalypse/configuration"
-	"github.com/RobotApocalypse/constants"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"

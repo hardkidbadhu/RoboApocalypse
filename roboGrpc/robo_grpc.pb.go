@@ -4,7 +4,7 @@
 // - protoc             v3.21.12
 // source: robo.proto
 
-package grpc
+package roboGrpc
 
 import (
 	context "context"

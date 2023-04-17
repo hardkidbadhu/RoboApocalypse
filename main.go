@@ -1,6 +1,15 @@
 package main
 
 import (
+	"github.com/hardkidbadhu/RoboApocalypse/Client"
+	"github.com/hardkidbadhu/RoboApocalypse/configuration"
+	"github.com/hardkidbadhu/RoboApocalypse/constants"
+	"github.com/hardkidbadhu/RoboApocalypse/grpcController"
+	"github.com/hardkidbadhu/RoboApocalypse/repository"
+	"github.com/hardkidbadhu/RoboApocalypse/roboGrpc"
+	"github.com/hardkidbadhu/RoboApocalypse/router"
+	"github.com/hardkidbadhu/RoboApocalypse/services"
+
 	"context"
 	"database/sql"
 	"net"
@@ -10,17 +19,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/RobotApocalypse/Client"
-	"github.com/RobotApocalypse/configuration"
-	"github.com/RobotApocalypse/constants"
-	"github.com/RobotApocalypse/grpcController"
-	"github.com/RobotApocalypse/repository"
-	"github.com/RobotApocalypse/router"
-	"github.com/RobotApocalypse/services"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
-
-	robo "github.com/RobotApocalypse/grpc"
 )
 
 func main() {
@@ -43,7 +43,7 @@ func main() {
 	}
 
 	go func() {
-		log.Println("spawning up grpc gateway")
+		log.Println("spawning up roboGrpc gateway")
 		listener, err := net.Listen("tcp", ":8081")
 		if err != nil {
 			panic(err)
@@ -54,7 +54,7 @@ func main() {
 		svc := services.NewReportSvc(repo, client)
 
 		s := grpc.NewServer()
-		robo.RegisterRoboApocalypseServer(s, grpcController.NewRoboServer(svc))
+		roboGrpc.RegisterRoboApocalypseServer(s, grpcController.NewRoboServer(svc))
 		if err := s.Serve(listener); err != nil {
 			log.Fatalf("failed to serve: %v", err)
 		}

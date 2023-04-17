@@ -23,8 +23,8 @@ func NewMiddleware(l *logrus.Entry) *middleware {
 	}
 }
 
-//RecoverHandler prevent abnormal shutdown while panic
-func (l *middleware) RecoverHandler() func (c *gin.Context) {
+// RecoverHandler prevent abnormal shutdown while panic
+func (l *middleware) RecoverHandler() func(c *gin.Context) {
 	return func(ctx *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
