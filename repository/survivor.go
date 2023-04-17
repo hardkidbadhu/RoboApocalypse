@@ -2,15 +2,16 @@ package repository
 
 import (
 	"database/sql"
+	"log"
+
 	"github.com/RobotApocalypse/model"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"log"
 )
 
-//query
+// query
 const (
-	AddSurvivor = `INSERT INTO tbl_survivor (name,age,gender,lastLocation) VALUES ($1,$2,$3,POINT($4,$5))`
+	AddSurvivor         = `INSERT INTO tbl_survivor (name,age,gender,lastLocation) VALUES ($1,$2,$3,POINT($4,$5))`
 	InsertInfectionLogs = `INSERT INTO tbl_infected_logs ("userId","infected","reportedBy") VALUES ($1,$2,$3)`
 
 	AddSurvivorInventory = `INSERT INTO tbl_survivor_inventory (water,food,medication,ammunation,"userId") VALUES ($1,$2,$3,$4,$5)`
@@ -30,17 +31,17 @@ const (
 	ListSurvivors = `select tbl_survivor.id, tbl_survivor.name, tbl_survivor.age, tbl_survivor.gender, tbl_survivor.lastlocation from tbl_survivor  where "infectionStatus"=$1`
 )
 
-type Survivor interface {
-	AddSurvivor(ctx *gin.Context, survivor *model.Survivor) (int64, error)
-	AddSurvivorInventory(ctx *gin.Context, userId int64, inventory model.Inventory) error
-	UpdateLocation(ctx *gin.Context, userId int64, location *model.Location) error
-	FlagUser(ctx *gin.Context, userId int64) error
-	FetchLastInsertedId(ctx *gin.Context) int64
-	CountInfectedLogs(ctx *gin.Context, userId int64) (int64, error)
-	InsertInfectionLog (ctx *gin.Context,  payload *model.FlagPayload) error
-	CountSurvivors(ctx *gin.Context, infectionStatus int64) (int64, error)
-	ListSurvivors(ctx *gin.Context, infectionStatus int64) ([]*model.Survivor, error)
-}
+// type Survivor interface {
+// 	AddSurvivor(ctx *gin.Context, survivor *model.Survivor) (int64, error)
+// 	AddSurvivorInventory(ctx *gin.Context, userId int64, inventory model.Inventory) error
+// 	UpdateLocation(ctx *gin.Context, userId int64, location *model.Location) error
+// 	FlagUser(ctx *gin.Context, userId int64) error
+// 	FetchLastInsertedId(ctx *gin.Context) int64
+// 	CountInfectedLogs(ctx *gin.Context, userId int64) (int64, error)
+// 	InsertInfectionLog (ctx *gin.Context,  payload *model.FlagPayload) error
+// 	CountSurvivors(ctx *gin.Context, infectionStatus int64) (int64, error)
+// 	ListSurvivors(ctx *gin.Context, infectionStatus int64) ([]*model.Survivor, error)
+// }
 
 type survivorSvc struct {
 	log *logrus.Entry
@@ -49,8 +50,8 @@ type survivorSvc struct {
 
 func (s survivorSvc) ListSurvivors(ctx *gin.Context, infectionStatus int64) ([]*model.Survivor, error) {
 	var (
-		rows *sql.Rows
-		err error
+		rows         *sql.Rows
+		err          error
 		survivorList []*model.Survivor
 	)
 
@@ -83,9 +84,9 @@ func (s survivorSvc) ListSurvivors(ctx *gin.Context, infectionStatus int64) ([]*
 			&survivIns.Age,
 			&survivIns.Gender,
 			&survivIns.CoOrdinates,
-			); err != nil {
+		); err != nil {
 			return nil, model.ErrResp{
-				Err: err,
+				Err:     err,
 				ErrCode: model.ErrDB,
 				Message: "error in fetching data",
 			}
@@ -99,7 +100,7 @@ func (s survivorSvc) ListSurvivors(ctx *gin.Context, infectionStatus int64) ([]*
 func (s survivorSvc) CountSurvivors(ctx *gin.Context, infectionStatus int64) (int64, error) {
 	var (
 		count int64
-		row *sql.Row
+		row   *sql.Row
 	)
 
 	switch infectionStatus {
@@ -156,7 +157,6 @@ func (s survivorSvc) AddSurvivor(ctx *gin.Context, survivor *model.Survivor) (in
 		return 0, err
 	}
 
-
 	log.Println("id", s.FetchLastInsertedId(ctx))
 	return s.FetchLastInsertedId(ctx), nil
 }
@@ -199,7 +199,7 @@ func (s survivorSvc) UpdateLocation(ctx *gin.Context, userId int64, location *mo
 	return nil
 }
 
-func (s survivorSvc) InsertInfectionLog (ctx *gin.Context, payload *model.FlagPayload) error {
+func (s survivorSvc) InsertInfectionLog(ctx *gin.Context, payload *model.FlagPayload) error {
 	_, err := s.db.ExecContext(
 		ctx,
 		InsertInfectionLogs,
@@ -232,10 +232,9 @@ func (s survivorSvc) FlagUser(ctx *gin.Context, userId int64) error {
 	return nil
 }
 
-func NewSurvivorRepo(log *logrus.Entry, db  *sql.DB) Survivor {
+func NewSurvivorRepo(log *logrus.Entry, db *sql.DB) Survivor {
 	return &survivorSvc{
 		log: log,
-		db: db,
+		db:  db,
 	}
 }
-

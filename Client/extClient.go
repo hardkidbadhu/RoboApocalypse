@@ -1,18 +1,19 @@
 package Client
 
 import (
+	"context"
 	"encoding/json"
+	"io/ioutil"
+	"net/http"
+
 	"github.com/RobotApocalypse/configuration"
 	"github.com/RobotApocalypse/constants"
 	"github.com/RobotApocalypse/model"
-	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"io/ioutil"
-	"net/http"
 )
 
 type ExtClient interface {
-	FetchAllRobot(ctx *gin.Context) ([]model.Robots, error)
+	FetchAllRobot(ctx context.Context) ([]model.Robots, error)
 }
 
 type extClient struct {
@@ -20,7 +21,7 @@ type extClient struct {
 	cfg configuration.Config
 }
 
-func (e extClient) FetchAllRobot(ctx *gin.Context) ([]model.Robots, error) {
+func (e extClient) FetchAllRobot(ctx context.Context) ([]model.Robots, error) {
 	req, err := http.NewRequest(http.MethodGet, e.cfg.GetString(constants.RoboListURL), nil)
 	if err != nil {
 		e.log.Errorf("extClient: FetchAllRobot (NewRequest) - %s", err.Error())

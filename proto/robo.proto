@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option go_package = "/grpc";
+
+message filter {
+    optional string category = 1;
+}
+
+message robo {
+   string model = 1;
+   string serialNumber = 2;
+   string manufacturedDate = 3;
+   string category = 4;
+}
+
+message roboList {
+    repeated robo roboList = 1;
+}
+
+service RoboApocalypse {
+  rpc GetRoboList(filter) returns (roboList) {}
+}

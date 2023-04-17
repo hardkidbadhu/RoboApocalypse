@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"errors"
 	"sort"
 	"strconv"
@@ -15,7 +16,7 @@ import (
 type ReportService interface {
 	Percentage(ctx *gin.Context, filter string) (*model.PercentageResp, error)
 	List(ctx *gin.Context, filter string) ([]*model.Survivor, error)
-	ListRobots(ctx *gin.Context) ([]model.Robots, error)
+	ListRobots(ctx context.Context) ([]model.Robots, error)
 }
 
 type reportSvc struct {
@@ -88,7 +89,7 @@ func (r reportSvc) List(ctx *gin.Context, filter string) ([]*model.Survivor, err
 	}
 }
 
-func (r reportSvc) ListRobots(ctx *gin.Context) ([]model.Robots, error) {
+func (r reportSvc) ListRobots(ctx context.Context) ([]model.Robots, error) {
 	robolist, err := r.extClient.FetchAllRobot(ctx)
 	if err != nil {
 		return nil, model.ErrResp{
