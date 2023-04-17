@@ -13,7 +13,7 @@ type RoboClient interface {
 
 type roboClient struct {
 	conn   *grpc.ClientConn
-	client robo.RoboApocalypseClient
+	client roboGrpc.RoboApocalypseClient
 }
 
 func NewRoboClient(address string) (RoboClient, error) {
@@ -22,13 +22,13 @@ func NewRoboClient(address string) (RoboClient, error) {
 		return nil, err
 	}
 
-	client := robo.NewRoboApocalypseClient(conn)
+	client := roboGrpc.NewRoboApocalypseClient(conn)
 
 	return &roboClient{conn: conn, client: client}, nil
 }
 
-func (c roboClient) GetRoboList(ctx context.Context, filter *robo.Filter) (*robo.RoboList, error) {
-	return c.client.GetRoboList(ctx, &robo.Filter{
+func (c roboClient) GetRoboList(ctx context.Context, filter *roboGrpc.Filter) (*roboGrpc.RoboList, error) {
+	return c.client.GetRoboList(ctx, &roboGrpc.Filter{
 		Category: filter.Category,
 	})
 }
